@@ -17,8 +17,9 @@ var client = new Twitter ({
   access_token_secret: keys.twitterKeys.access_token_secret,
 });
 
-//If else statement to determine what to print if typed in terminal by the user
-if (userInput1 === 'my-tweets') {
+// Start Of Functions 
+
+var twitterFunction = function() {
     var userID = process.argv[3] || 'KingJames'
     var params = { screen_name: userID };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
@@ -28,8 +29,9 @@ if (userInput1 === 'my-tweets') {
         }
       }
     });
+};
 
-} if (userInput1 === 'spotify-this-song') {
+var spotifyFunction = function() {
     var songInput = process.argv[3] || 'What\'s My Age Again by Blink 182'
     spotify.search({ type: 'track', query: songInput }, function(err, data) {
     
@@ -43,14 +45,15 @@ if (userInput1 === 'my-tweets') {
             console.log('Album Name: ' + data.tracks.items[i].album.name);
             console.log('Preview Link: ' + data.tracks.items[i].preview_url);
 
-        for( var k = 0; k < data.tracks.items[k].artists.length; k++) {
+        for (var k = 0; k < data.tracks.items[k].artists.length; k++) {
             console.log('Artist Name: ' + data.tracks.items[i].artists[k].name);
             console.log('---------------------------------------');
         }
       }
     }); 
+}; 
 
-} if (userInput1 === 'movie-this') {
+var imdbFunction = function() {
     var movieInput = process.argv[3] || 'Mr. Nobody'
     console.log(movieInput);
     var queryURL = "http://www.omdbapi.com/?t=" + movieInput + "&y=&plot=small&r=json";
@@ -69,8 +72,9 @@ if (userInput1 === 'my-tweets') {
                   "\nActors: " + format.Actors); 
       }
     });
+};
 
-} if (userInput1 === 'do-what-it-says') {
+var randomFunction = function() { 
 
     fs.readFile('random.txt', 'utf8', function(err, data) {
         if (err) {
@@ -82,8 +86,21 @@ if (userInput1 === 'my-tweets') {
           data = data.split(',');
             userInput1 = data[0];
             userInput2 = data[1];
-
-            //Finish creating Spotify Function to push the text to use the spotify npm package
+            console.log(data);
             // spotifyFunction();
     });
-}
+};
+
+// If Else Statement To Determine Node Functionality
+if (userInput1 === 'my-tweets') {
+    twitterFunction();
+
+} else if (userInput1 === 'spotify-this-song') {
+    spotifyFunction();
+
+} else if (userInput1 === 'movie-this') {
+    imdbFunction();
+
+} else if (userInput1 === 'do-what-it-says') {
+    randomFunction();
+};
