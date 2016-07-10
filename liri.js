@@ -28,25 +28,24 @@ if (userInput1 === 'my-tweets') {
     });
 
 } if (userInput1 === 'spotify-this-song') {
-    var userInput2 = process.argv[3] || 'what\'s my age again by Blink 182'
+    var userInput2 = process.argv[3] || 'What\'s My Age Again by Blink 182'
     spotify.search({ type: 'track', query: userInput2 }, function(err, data) {
     if ( err ) {
         console.log('Error occurred: ' + err);
         return;
     }
-
-      for (var i = 0; i < data.tracks.items.length; i++) {
-          console.log('song name: ' + data.tracks.items[i].name);
-          console.log('preview url:'+ data.tracks.items[i].preview_url);
-          console.log('album name: ' + data.tracks.items[i].album.name);
+      for (var i = 0; i < 5; i++) {
+            console.log('---------------------------------------');
+            console.log('Song Name: ' + data.tracks.items[i].name);
+            console.log('Preview Link: ' + data.tracks.items[i].preview_url);
+            console.log('Album Name: ' + data.tracks.items[i].album.name);
 
         for( var k = 0; k < data.tracks.items[k].artists.length; k++) {
-             console.log('artist name: ' + data.tracks.items[i].artists[k].name);
+            console.log('Artist Name: ' + data.tracks.items[i].artists[k].name);
+            console.log('---------------------------------------');
         }
       }
- 
-    // Do something with 'data' 
-});
+}); 
 
   // Do Spotify Function
 } if (userInput1 === 'movie-this') {
