@@ -1,17 +1,14 @@
 //Global Require Variables
 var keys = require('./keys.js');
-var twitter = require('twitter');
+var Twitter = require('twitter');
 var fs = require('fs');
 
-console.log(twitter);
-console.log(keys);
-
 //Assigning Values to arguments in terminal
-var type = process.argv[2];
-var argument = process.argv[3];
+var userInput1 = process.argv[2];
+var userInput2 = process.argv[3];
 
 //Assigned a new object using the exported keys object
-var T = new Twitter ({
+var client = new Twitter ({
   consumer_key: keys.twitterKeys.consumer_key,
   consumer_secret: keys.twitterKeys.consumer_secret,
   access_token_key: keys.twitterKeys.access_token_key,
@@ -19,18 +16,25 @@ var T = new Twitter ({
 });
 
 //If else statement to determine what to print if typed in terminal by the user
-if (type === 'my-tweets') {
+if (userInput1 === 'my-tweets') {
+    var params = { screen_name: 'KingJames' };
+    client.get('statuses/user_timeline', params, function(error, tweets, response){
+    if (!error) {
+        for (var i = 0; i < 20; i++) {
+                console.log(tweets[i].text);
+    }
+  }
+});
   console.log('i work');
   // Do Twitter Function
-} if (type === 'spotify-this-song') {
+}if (userInput1 === 'spotify-this-song') {
 
   // Do Spotify Function
-} if (type === 'movie-this') {
+} if (userInput1 === 'movie-this') {
 
   // Do Movie Function
-} if (type === 'do-what-it-says') {
+} if (userInput1 === 'do-what-it-says') {
 
   // Do Random Function
 }
-
-
+ 
