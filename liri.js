@@ -1,15 +1,21 @@
-//Global Require Variables
+// Global require variables
 var keys = require('./keys.js');
 var Twitter = require('twitter');
 var fs = require('fs');
 var spotify = require('spotify');
 var request = require('request');
 
-//Assigning Values to arguments in terminal
-var userInput1 = process.argv[2];
-var userInput2 = process.argv[3];
+// Assigned values to movie and song inputs
+var movieInput;
+var songInput;
 
-//Assigned a new object using the exported keys object
+// Assignined value to argument in terminal
+var userInput1 = process.argv[2];
+
+// Assigned twitterInput to the third argument in the terminal
+var twitterInput = process.argv[3];
+
+// Assigned a new object using the exported keys object
 var client = new Twitter ({
   consumer_key: keys.twitterKeys.consumer_key,
   consumer_secret: keys.twitterKeys.consumer_secret,
@@ -17,22 +23,32 @@ var client = new Twitter ({
   access_token_secret: keys.twitterKeys.access_token_secret,
 });
 
-// Start Of Functions 
-
+// Start of functions 
 var twitterFunction = function() {
-    var userID = process.argv[3] || 'KingJames'
+    var userID = twitterInput || 'KingJames'
     var params = { screen_name: userID };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
       if (!error) {
         for (var i = 0; i < 20; i++) {
-                  console.log(tweets[i].text);
+                   console.log(tweets[i].text);
+                   console.log('---------------------------------------');
         }
       }
     });
 };
 
 var spotifyFunction = function() {
-    var songInput = process.argv[3] || 'What\'s My Age Again by Blink 182';
+    // Takes all arguments and creates one string allowing more than one word to be searched
+    var songArgs = [process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7]];
+    var joinedArgs = songArgs.join(' ');
+
+    // If/else statement to seperate default undefined value and joined arguements if typed into terminal
+    if (process.argv[3] === undefined) {
+        songInput = 'What\'s My Age Again by Blink 182';
+    } else {
+        songInput = joinedArgs;
+    }
+
     spotify.search({ type: 'track', query: songInput }, function(err, data) {
     
     if ( err ) {
@@ -54,7 +70,15 @@ var spotifyFunction = function() {
 }; 
 
 var imdbFunction = function() {
-    var movieInput = process.argv[3] || 'Mr. Nobody'
+    var movieArgs = [process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7]];
+    var allArgs = movieArgs.join(' ');
+
+    // If/else statement to seperate default undefined value and joined arguements if typed into terminal
+    if (process.argv[3] === undefined) {
+          movieInput = 'Mr. Nobody';
+    } else {
+          movieInput = allArgs;
+    }
     var queryURL = "http://www.omdbapi.com/?t=" + movieInput + "&y=&plot=small&r=json";
 
     request(queryURL, function (error, response, body) {
@@ -85,6 +109,8 @@ var randomFunction = function() {
           data = data.split(',');
             split1 = data[0];
             split2 = data[1];
+
+            // New variation of the Spotify function using the split data from random.txt
             var useInput = function() {
 
             spotify.search({ type: 'track', query: split2 }, function(err, data) {
@@ -108,7 +134,7 @@ var randomFunction = function() {
     });
 };
 
-// If Else Statement To Determine Node Functionality
+// If else statement to determine node functionality
 if (userInput1 === 'my-tweets') {
     twitterFunction();
 
