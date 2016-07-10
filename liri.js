@@ -32,7 +32,7 @@ var twitterFunction = function() {
 };
 
 var spotifyFunction = function() {
-    var songInput = process.argv[3] || 'What\'s My Age Again by Blink 182'
+    var songInput = process.argv[3] || 'What\'s My Age Again by Blink 182';
     spotify.search({ type: 'track', query: songInput }, function(err, data) {
     
     if ( err ) {
@@ -55,7 +55,6 @@ var spotifyFunction = function() {
 
 var imdbFunction = function() {
     var movieInput = process.argv[3] || 'Mr. Nobody'
-    console.log(movieInput);
     var queryURL = "http://www.omdbapi.com/?t=" + movieInput + "&y=&plot=small&r=json";
 
     request(queryURL, function (error, response, body) {
@@ -84,10 +83,28 @@ var randomFunction = function() {
         } else 
           
           data = data.split(',');
-            userInput1 = data[0];
-            userInput2 = data[1];
-            console.log(data);
-            // spotifyFunction();
+            split1 = data[0];
+            split2 = data[1];
+            var useInput = function() {
+
+            spotify.search({ type: 'track', query: split2 }, function(err, data) {
+    
+             if ( err ) {
+                console.log('Error occurred: ' + err);
+                  return;
+              }       
+                      console.log('---------------------------------------');
+                      console.log('Song Name: ' + data.tracks.items[0].name);
+                      console.log('Album Name: ' + data.tracks.items[0].album.name);
+                      console.log('Preview Link: ' + data.tracks.items[0].preview_url);
+                      console.log('Artist Name: ' + data.tracks.items[0].artists[0].name);
+                      console.log('---------------------------------------');
+                  
+              
+              }); 
+
+            }
+            useInput();
     });
 };
 
